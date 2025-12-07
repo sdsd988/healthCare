@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>직원 건강 검진 결과 목록</title>
+  <style>
+    /* 검색 영역 스타일 */
+    .search-container { margin-bottom: 30px; padding: 20px; border: 1px solid #c9c9c9; background-color: #f7f7f7; border-radius: 5px; }
+    .search-item { margin-bottom: 10px; display: inline-block; margin-right: 15px; }
+    .search-item label { font-weight: bold; margin-right: 5px; }
+    .search-actions { margin-top: 15px; text-align: right; }
+    /* 리스트 영역 스타일 */
+    table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+    th, td { border: 1px solid #ddd; padding: 8px; text-align: center; font-size: 14px; }
+    th { background-color: #e9ecef; }
+    .grade-r { color: red; font-weight: bold; }
+    .grade-y { color: orange; font-weight: bold; }
+  </style>
+</head>
+<body>
+<h2>직원 건강 검진 및 관리 현황</h2>
+
+<div class="search-container">
+  <form action="/health/results" method="get" th:object="${search}">
+
+    <div class="search-item">
+      <label for="workerName">직원명:</label>
+      <input type="text" id="workerName" th:field="*{workerName}" placeholder="직원명 입력">
+    </div>
+
+    <div class="search-item">
+      <label for="department">부서:</label>
+      <select id="department" th:field="*{department}">
+        <option value="">전체 부서</option>
+        <option value="왕송호수레저팀">왕송호수레저팀</option>
+        <option value="교통시설팀">교통시설팀</option>
+        <option value="포일스포츠센터팀">포일스포츠센터팀</option>
+        <option value="바라산휴양림팀">바라산휴양림팀</option>
+      </select>
+    </div>
+
+    <div class="search-item">
+      <label for="generalGrade">일반검진 등급:</label>
+      <select id="generalGrade" th:field="*{generalGrade}">
+        <option value="">전체</option>
+        <option value="A">A</option>
+        <option value="B">B</option>
+        <option value="C">C</option>
+        <option value="D">D</option>
+      </select>
+    </div>
+
+    <div class="search-item">
+      <label for="specialGrade">특수검진 등급:</label>
+      <select id="specialGrade" th:field="*{specialGrade}">
+        <option value="">전체</option>
+        <option value="A">A</option>
+        <option value="B">B</option>
+        <option value="C">C</option>
+        <option value="D">D</option>
+      </select>
+    </div>
+
+    <div class="search-item">
+      <label for="bhGrade">뇌심혈관 등급:</label>
+      <select id="bhGrade" th:field="*{bhGrade}">
+        <option value="">전체</option>
+        <option value="고">고</option>
+        <option value="중">중</option>
+        <option value="저">저</option>
+      </select>
+    </div>
+
+    <div class="search-item">
+      <label for="msGrade">근골격계 등급:</label>
+      <select id="msGrade" th:field="*{msGrade}">
+        <option value="">전체</option>
+        <option value="고">고</option>
+        <option value="중">중</option>
+        <option value="저">저</option>
+      </select>
+    </div>
+
+    <div class="search-item">
+      <label for="hasConsultation">상담 유무:</label>
+      <select id="hasConsultation" th:field="*{hasConsultation}">
+        <option value="">전체</option>
+        <option th:value="true">✅ 상담 있음</option>
+        <option th:value="false">❌ 상담 없음</option>
+      </select>
+    </div>
+
+    <div class="search-actions">
+      <button type="submit">🔍 검색</button>
+      <a th:href="@{/health/results}" class="btn-reset">🔄 초기화</a>
+    </div>
+  </form>
+</div>
+
+<hr>
+
+<table>
+  <thead>
+  <tr>
+    <th>No.</th>
+    <th>환자명</th>
+    <th>발령직군</th>
+    <th>부서</th>
+    <th>일반검진</th>
+    <th>뇌심평가</th>
+    <th>근골격계</th>
+    <th>특수검진</th>
+    <th>보건상담</th>
+    <th>등록일</th>
+    <th>상세</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="result, iStat : ${results}">
+    <td th:text="${iStat.count}">1</td>
+    <td th:text="${result.workerName}"></td>
+    <td th:text="${result.occupation}"></td>
+    <td th:text="${result.department}"></td>
+
+    <td th:text="${result.generalHealthGrade}"></td>
+    <td th:text="${result.brainHeartGrade}" th:classappend="${result.brainHeartGrade == 'R' ? 'grade-r' : ''}"></td>
+    <td th:text="${result.musculoskeletalGrade}" th:classappend="${result.musculoskeletalGrade == 'R' ? 'grade-r' : (result.musculoskeletalGrade == 'Y' ? 'grade-y' : '')}"></td>
+    <td th:text="${result.specialHealthGrade}"></td>
+
+    <td th:text="${result.hasHealthConsultation ? '✅' : '❌'}"></td>
+
+    <td th:text="${#temporals.format(result.registrationDate, 'yyyy-MM-dd HH:mm')}"></td>
+
+    <td>
+      <a th:href="@{/health/results/{id}(id=${result.workerId})}">상세</a>
+    </td>
+  </tr>
+  <tr th:if="${#lists.isEmpty(results)}">
+    <td colspan="11">검색 결과가 없습니다.</td>
+  </tr>
+  </tbody>
+</table>
+</body>
+</html>
