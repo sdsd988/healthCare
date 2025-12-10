@@ -18,7 +18,7 @@ public class Worker {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long workerId;
 
-  private String workerName;
+  private String name;
 
   private String occupation;
 
@@ -33,7 +33,7 @@ public class Worker {
   private String workerType;
 
   @OneToMany(mappedBy = "worker", cascade = CascadeType.ALL, orphanRemoval = true)
-  private List<AfterCare> afterCares = new ArrayList<>(); // 컬렉션 타입 및 이름 수정
+  private List<PostManagerReport> postManagerReports = new ArrayList<>(); // 컬렉션 타입 및 이름 수정
 
 
 

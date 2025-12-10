@@ -1,11 +1,10 @@
 package healthmanage.healthcare.service;
 
 import healthmanage.healthcare.dto.request.WorkerSearchRequest;
-import healthmanage.healthcare.dto.response.AfterCareResponse;
-import healthmanage.healthcare.dto.WorkerListDto;
+import healthmanage.healthcare.dto.response.PostManagerDetailResponse;
+import healthmanage.healthcare.dto.response.PostManagerResponse;
 import healthmanage.healthcare.repository.AfterCareRepository;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -20,13 +19,12 @@ public class AfterCareService {
   private final AfterCareRepository afterCareRepository;
 
 
-  private static final List<WorkerListDto> workerDummyStore = new ArrayList<>();
 
-  public List<AfterCareResponse> findAfterCareResults(WorkerSearchRequest workerSearchRequest) {
+  public List<PostManagerResponse> findAfterCareResults(WorkerSearchRequest workerSearchRequest) {
     LocalDateTime now = LocalDateTime.now();
 
     return Arrays.asList(
-        new AfterCareResponse(
+        new PostManagerResponse(
             1L,
             "강영구",
             "일반직",
@@ -38,7 +36,7 @@ public class AfterCareService {
             true, // 상담 있음
             now.minusDays(5)
         ),
-        new AfterCareResponse(
+        new PostManagerResponse(
             2L,
             "김민우",
             "공무직",
@@ -50,7 +48,7 @@ public class AfterCareService {
             false, // 상담 없음
             now.minusDays(10)
         ),
-        new AfterCareResponse(
+        new PostManagerResponse(
             3L,
             "김상진",
             "일반직",
@@ -62,7 +60,7 @@ public class AfterCareService {
             true, // 상담 있음
             now.minusDays(1)
         ),
-        new AfterCareResponse(
+        new PostManagerResponse(
             4L,
             "김재훈",
             "일반직",
@@ -77,4 +75,18 @@ public class AfterCareService {
     );
   }
 
+  public PostManagerDetailResponse getPostManagerDetail(Long workerId) {
+    PostManagerDetailResponse detailDTO = new PostManagerDetailResponse();
+
+
+    //
+    // 2. 직원 기본 정보
+
+      detailDTO.setWorkerId(1L);
+      detailDTO.setName("강영구");
+      detailDTO.setDepartment("왕송호수팀");
+      detailDTO.setOccupation("일반직");
+
+      return detailDTO;
+  }
 }

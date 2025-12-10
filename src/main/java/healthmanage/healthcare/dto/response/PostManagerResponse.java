@@ -6,7 +6,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class AfterCareResponse {
+public class PostManagerResponse {
 
   private Long workerId;
   private String workerName;      // 환자명
@@ -22,7 +22,7 @@ public class AfterCareResponse {
   private LocalDateTime registrationDate;
 
 
-  public AfterCareResponse(Long workerId, String workerName, String occupation, String department,
+  public PostManagerResponse(Long workerId, String workerName, String occupation, String department,
       String generalHealthGrade, String brainHeartGrade, String musculoskeletalGrade,
       String specialHealthGrade, boolean hasHealthConsultation, LocalDateTime registrationDate) {
     this.workerId = workerId;

@@ -15,11 +15,11 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 
 @Entity
-public class AfterCare {
+public class PostManagerReport {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long afterCareId;
+  private Long postManagerId;
 
   private Integer issueYear; // 발행년도 (예: 2024)
 
