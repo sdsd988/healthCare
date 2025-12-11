@@ -78,5 +78,5 @@ public class GeneralCheckup {
     private String remarkCode;              // 소견번호
 
     @Column(name = "examYear")
-    private String examYear;
+    private String examYear;                // 검진년도
 }
