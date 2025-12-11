@@ -197,7 +197,7 @@
 
         const bmi = sorted.map(it => toNumberOrNull(it.bmi));
 
-        function createLineChart(canvasId, noDataId, datasets, yBeginZero = false) {
+        function createLineChart(canvasId, noDataId, datasets, yBeginZero = true) {
             const canvas = document.getElementById(canvasId);
             const nodataEl = document.getElementById(noDataId);
 
