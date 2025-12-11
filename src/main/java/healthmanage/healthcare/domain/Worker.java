@@ -1,9 +1,8 @@
 package healthmanage.healthcare.domain;
 
-import healthmanage.healthcare.domain.aftercare.GeneralCheckup;
+import healthmanage.healthcare.domain.postmanager.GeneralCheckup;
 import jakarta.persistence.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import lombok.Getter;
 
@@ -36,7 +35,7 @@ public class Worker {
     @Column(name = "birth_date", length = 255, nullable = false)
     private String birthDate;
 
-    //성병
+    //성별
     @Column(name = "gender", length = 50)
     private String gender;
 

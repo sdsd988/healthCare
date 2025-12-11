@@ -1,9 +1,14 @@
-package healthmanage.healthcare.domain.aftercare;
+package healthmanage.healthcare.domain.postmanager;
 
 import healthmanage.healthcare.domain.Worker;
+import healthmanage.healthcare.domain.converter.SmokingConverter;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
+@Getter
+@NoArgsConstructor
 public class GeneralCheckup {
 
 
@@ -12,7 +17,6 @@ public class GeneralCheckup {
     @Column(name = "general_checkup_id")
     private Long generalCheckupId;
 
-    // Worker N : 1 관계
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "worker_id", nullable = false)
     private Worker worker;
@@ -42,10 +46,10 @@ public class GeneralCheckup {
     @Column(name = "ldl")
     private String ldl;                     // LDL
 
-    @Column(name = "kidneyDiseaseGrade")
+    @Column(name = "kidney_disease_grade")
     private String kidneyDiseaseGrade;      // 신장질환등급
 
-    @Column(name = "urineProtein")
+    @Column(name = "urine_protein")
     private String urineProtein;            // 요단백
 
     @Column(name = "gfr")
@@ -54,7 +58,7 @@ public class GeneralCheckup {
     @Column(name = "creatinine")
     private String creatinine;              // 크레아틴
 
-    @Column(name = "obesityGrade")
+    @Column(name = "obesity_grade")
     private String obesityGrade;            // 비만등급
 
     @Column(name = "waist")
@@ -63,6 +67,7 @@ public class GeneralCheckup {
     @Column(name = "bmi")
     private String bmi;                     // 체질량지수
 
+    @Convert(converter = SmokingConverter.class)
     @Column(name = "smoking")
     private String smoking;                 // 흡연여부
 
