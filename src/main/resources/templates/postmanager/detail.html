@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>사후관리 소견서 상세</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background: #f4f4f4;
+            font-weight: bold;
+        }
+        h2 {
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>사후관리 소견서 상세</h1>
+
+<!-- ============================
+     1. 근로자 기본정보
+============================= -->
+<h2>직원 정보</h2>
+
+<table>
+    <tr>
+        <th>이름</th>
+        <td th:text="${detail.name}"></td>
+    </tr>
+    <tr>
+        <th>부서</th>
+        <td th:text="${detail.department}"></td>
+    </tr>
+    <tr>
+        <th>직군</th>
+        <td th:text="${detail.occupation}"></td>
+    </tr>
+</table>
+
+
+
+<!-- ============================
+     2. 건강검진 정보 리스트
+============================= -->
+<h2>건강검진 이력</h2>
+
+<table>
+    <thead>
+    <tr>
+        <th>검진년도</th>
+        <th>고혈압 등급</th>
+        <th>이완기 혈압</th>
+        <th>수축기 혈압</th>
+        <th>이상지질등급</th>
+        <th>총콜레스테롤</th>
+        <th>중성지방</th>
+        <th>HDL</th>
+        <th>LDL</th>
+        <th>신장질환등급</th>
+        <th>요단백</th>
+        <th>사구체여과율</th>
+        <th>크레아틴</th>
+        <th>비만등급</th>
+        <th>허리둘레</th>
+        <th>BMI</th>
+        <th>흡연여부</th>
+        <th>공복혈당</th>
+    </tr>
+    </thead>
+
+    <tbody>
+
+    <!-- 리스트 반복 -->
+    <tr th:each="item : ${detail.generalCheckupDetail}">
+
+        <td th:text="${item.examYear}"></td>
+        <td th:text="${item.highBloodPressureGrade}"></td>
+        <td th:text="${item.diastolic}"></td>
+        <td th:text="${item.systolic}"></td>
+        <td th:text="${item.lipidGrade}"></td>
+        <td th:text="${item.totalCholesterol}"></td>
+        <td th:text="${item.triglyceride}"></td>
+        <td th:text="${item.hdl}"></td>
+        <td th:text="${item.ldl}"></td>
+        <td th:text="${item.kidneyDiseaseGrade}"></td>
+        <td th:text="${item.urineProtein}"></td>
+        <td th:text="${item.gfr}"></td>
+        <td th:text="${item.creatinine}"></td>
+        <td th:text="${item.obesityGrade}"></td>
+        <td th:text="${item.waist}"></td>
+        <td th:text="${item.bmi}"></td>
+
+        <!-- Y/N 를 보기좋게 변환 -->
+        <td th:text="${item.smoking == 'Y' ? '흡연' : '비흡연'}"></td>
+
+        <td th:text="${item.fastingBloodSugar}"></td>
+    </tr>
+
+    </tbody>
+</table>
+
+<h2>혈압 추이 그래프 (최근 3년)</h2>
+
+<canvas id="bloodPressureChart" width="600" height="300"></canvas>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script th:inline="javascript">
+    const checkupData = /*[[${detail.generalCheckupDetail}]]*/ [];
+
+    const sorted = checkupData.sort((a, b) => Number(b.examYear) - Number(a.examYear));
+    const last3 = sorted.slice(0, 3).reverse();
+
+    const labels = last3.map(item => item.examYear);
+    const diastolicData = last3.map(item => Number(item.diastolic));
+    const systolicData = last3.map(item => Number(item.systolic));
+
+    const ctx = document.getElementById('bloodPressureChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [
+                {
+                    label: '이완기 혈압',
+                    data: diastolicData,
+                    borderWidth: 2,
+                    tension: 0.2
+                },
+                {
+                    label: '수축기 혈압',
+                    data: systolicData,
+                    borderWidth: 2,
+                    tension: 0.2
+                }
+            ]
+        },
+        options: {
+            responsive: false,
+            scales: {
+                y: { beginAtZero: true }
+            }
+        }
+    });
+</script>
+
+</body>
+</html>

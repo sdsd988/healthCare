@@ -1,16 +1,26 @@
 package healthmanage.healthcare.dto.response;
 
+import healthmanage.healthcare.domain.converter.SmokingConverter;
+import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.List;
 
 @Getter
 @Setter
 public class PostManagerDetailResponse {
 
-  private Long workerId;
-  private String name;
-  private String department;
-  private String occupation;
+    // 1. 직원 정보
+    Long workerId;
+    String name;
+    String department;
+    String occupation;
+
+    // 2. 일반건강검진 정보
+    List<GeneralCheckupDetailResponse> generalCheckupDetail;
+
 
 
 }

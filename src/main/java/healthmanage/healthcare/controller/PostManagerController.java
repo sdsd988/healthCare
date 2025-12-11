@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/aftercare")
 @RequiredArgsConstructor
-public class AfterCareController {
+public class PostManagerController {
 
   private final PostManagerService postManagerService;
 
@@ -30,7 +30,7 @@ public class AfterCareController {
     // 3. ✨핵심 수정: 검색 조건을 "search"라는 이름으로 모델에 명시적으로 다시 담아,
     //    HTML에서 th:object로 안전하게 바인딩할 수 있도록 합니다. (오류 방지)
     model.addAttribute("search", searchRequest);
-    return "aftercare/list";
+    return "postmanager/list";
   }
 
   @GetMapping("/detail/{workerId}")
@@ -40,7 +40,7 @@ public class AfterCareController {
 
     // 2. 모델에 DTO 추가
     model.addAttribute("detail", response);
-    return "aftercare/detail";
+    return "postmanager/detail";
   }
 
 }
