@@ -53,7 +53,7 @@ public class PostManagerController {
     @PostMapping
     public String save(@ModelAttribute("form") GeneralCheckupRequestDto form) {
 
-        return "redirect:/health/results";
+        return "redirect:/postmanager/list";
     }
 
 }
