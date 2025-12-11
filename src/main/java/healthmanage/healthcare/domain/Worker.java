@@ -1,11 +1,8 @@
 package healthmanage.healthcare.domain;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import healthmanage.healthcare.domain.aftercare.GeneralCheckup;
+import jakarta.persistence.*;
+
 import java.util.ArrayList;
 import java.util.List;
 import lombok.Getter;
@@ -14,27 +11,41 @@ import lombok.Getter;
 @Getter
 public class Worker {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long workerId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "worker_id")
+    private Long workerId;
 
-  private String name;
+    //이름
+    @Column(name = "name", length = 255, nullable = false)
+    private String name;
 
-  private String occupation;
+    //기관
+    @Column(name = "institution", length = 255, nullable = false)
+    private String institution;
 
-  private String department;
+    //직무
+    @Column(name = "occupation", length = 255, nullable = false)
+    private String occupation;
 
-  private String birthDate;
+    //부서
+    @Column(name = "department", length = 255, nullable = false)
+    private String department;
 
-  private String gender;
+    //생년월일
+    @Column(name = "birth_date", length = 255, nullable = false)
+    private String birthDate;
 
-  private String field;
+    //성병
+    @Column(name = "gender", length = 50)
+    private String gender;
 
-  private String workerType;
+    //근무형태
+    @Column(name = "work_type", length = 255, nullable = false)
+    private String workType;
 
-  @OneToMany(mappedBy = "worker", cascade = CascadeType.ALL, orphanRemoval = true)
-  private List<PostManagerReport> postManagerReports = new ArrayList<>(); // 컬렉션 타입 및 이름 수정
-
-
+    // Worker 1명 → 건강검진 여러개
+    @OneToMany(mappedBy = "worker", cascade = CascadeType.ALL, orphanRemoval = false)
+    private List<GeneralCheckup> generalCheckups;
 
 }

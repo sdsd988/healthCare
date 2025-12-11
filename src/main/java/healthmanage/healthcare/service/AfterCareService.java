@@ -3,7 +3,7 @@ package healthmanage.healthcare.service;
 import healthmanage.healthcare.dto.request.WorkerSearchRequest;
 import healthmanage.healthcare.dto.response.PostManagerDetailResponse;
 import healthmanage.healthcare.dto.response.PostManagerResponse;
-import healthmanage.healthcare.repository.AfterCareRepository;
+
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
@@ -16,7 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class AfterCareService {
 
-  private final AfterCareRepository afterCareRepository;
 
 
 
