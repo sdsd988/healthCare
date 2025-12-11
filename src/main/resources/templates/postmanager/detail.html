@@ -3,24 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <title>사후관리 소견서 상세</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
+
     <style>
-        table {
+        /* 테이블은 Bootstrap의 기본 구조 유지 */
+
+        .after-chart-container {
             width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-        th, td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: center;
-        }
-        th {
-            background: #f4f4f4;
-            font-weight: bold;
-        }
-        h2 {
             margin-top: 30px;
         }
+
+        /* 차트만 그리드 */
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 20px;
+        }
+
+        /* chart-card 그대로 */
+        .chart-card {
+            background: #fff;
+            border: 1px solid #e6e6e6;
+            border-radius: 8px;
+            padding: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .chart-card canvas {
+            width: 100% !important;
+            height: 260px !important;
+        }
+
     </style>
 </head>
 <body>
@@ -32,21 +45,31 @@
 ============================= -->
 <h2>직원 정보</h2>
 
-<table>
-    <tr>
-        <th>이름</th>
-        <td th:text="${detail.name}"></td>
-    </tr>
-    <tr>
-        <th>부서</th>
-        <td th:text="${detail.department}"></td>
-    </tr>
-    <tr>
-        <th>직군</th>
-        <td th:text="${detail.occupation}"></td>
-    </tr>
-</table>
+    <table class="table table-bordered">
+        <thead class="table-light">
+        <tr>
+            <th style="width: 150px;">항목</th>
+            <th>내용</th>
+        </tr>
+        </thead>
 
+        <tbody>
+        <tr>
+            <th>이름</th>
+            <td th:text="${detail.name}"></td>
+        </tr>
+
+        <tr>
+            <th>부서</th>
+            <td th:text="${detail.department}"></td>
+        </tr>
+
+        <tr>
+            <th>직군</th>
+            <td th:text="${detail.occupation}"></td>
+        </tr>
+        </tbody>
+    </table>
 
 
 <!-- ============================
@@ -54,102 +77,165 @@
 ============================= -->
 <h2>건강검진 이력</h2>
 
-<table>
-    <thead>
+<table class="table table-bordered">
+    <thead class="table-light">
     <tr>
-        <th>검진년도</th>
+        <th style="white-space:nowrap;">검진년도</th>
         <th>고혈압 등급</th>
         <th>이완기 혈압</th>
         <th>수축기 혈압</th>
-        <th>이상지질등급</th>
+
+        <th style="white-space:nowrap;">이상지질 등급</th>
         <th>총콜레스테롤</th>
         <th>중성지방</th>
         <th>HDL</th>
         <th>LDL</th>
-        <th>신장질환등급</th>
+
+        <th style="white-space:nowrap;">신장질환 등급</th>
         <th>요단백</th>
-        <th>사구체여과율</th>
+        <th>GFR</th>
         <th>크레아틴</th>
+
         <th>비만등급</th>
         <th>허리둘레</th>
         <th>BMI</th>
+
         <th>흡연여부</th>
         <th>공복혈당</th>
     </tr>
     </thead>
 
     <tbody>
-
-    <!-- 리스트 반복 -->
     <tr th:each="item : ${detail.generalCheckupDetail}">
-
         <td th:text="${item.examYear}"></td>
         <td th:text="${item.highBloodPressureGrade}"></td>
         <td th:text="${item.diastolic}"></td>
         <td th:text="${item.systolic}"></td>
+
         <td th:text="${item.lipidGrade}"></td>
         <td th:text="${item.totalCholesterol}"></td>
         <td th:text="${item.triglyceride}"></td>
         <td th:text="${item.hdl}"></td>
         <td th:text="${item.ldl}"></td>
+
         <td th:text="${item.kidneyDiseaseGrade}"></td>
         <td th:text="${item.urineProtein}"></td>
         <td th:text="${item.gfr}"></td>
         <td th:text="${item.creatinine}"></td>
+
         <td th:text="${item.obesityGrade}"></td>
         <td th:text="${item.waist}"></td>
         <td th:text="${item.bmi}"></td>
 
-        <!-- Y/N 를 보기좋게 변환 -->
+        <!-- Y/N 보기 좋게 변환 -->
         <td th:text="${item.smoking == 'Y' ? '흡연' : '비흡연'}"></td>
 
         <td th:text="${item.fastingBloodSugar}"></td>
     </tr>
-
     </tbody>
 </table>
 
-<h2>혈압 추이 그래프 (최근 3년)</h2>
 
-<canvas id="bloodPressureChart" width="600" height="300"></canvas>
+<!-- ============================
+     3. 그래프 영역 (테이블 밖, 독립적)
+============================= -->
+<div class="after-chart-container">
+    <div class="charts-grid">
+
+        <!-- 카드 1: 혈압 -->
+        <div class="chart-card">
+            <div class="chart-title">혈압 추이 (최근 3년)</div>
+            <canvas id="bpChart"></canvas>
+            <div id="bpNoData" class="no-data" style="display:none;">표시할 혈압 데이터가 없습니다.</div>
+        </div>
+
+        <!-- 카드 2: 지질 -->
+        <div class="chart-card">
+            <div class="chart-title">지질 검사 추이 (최근 3년)</div>
+            <canvas id="lipidChart"></canvas>
+            <div id="lipidNoData" class="no-data" style="display:none;">표시할 지질 데이터가 없습니다.</div>
+        </div>
+
+        <!-- 카드 3: BMI -->
+        <div class="chart-card">
+            <div class="chart-title">BMI 추이 (최근 3년)</div>
+            <canvas id="bmiChart"></canvas>
+            <div id="bmiNoData" class="no-data" style="display:none;">표시할 BMI 데이터가 없습니다.</div>
+        </div>
+    </div>
+</div>
+
+<!-- Chart.js -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script th:inline="javascript">
-    const checkupData = /*[[${detail.generalCheckupDetail}]]*/ [];
+    /* 그대로 — 너가 주신 JS 그래프 로직 전체 유지 (문제 없음) */
 
-    const sorted = checkupData.sort((a, b) => Number(b.examYear) - Number(a.examYear));
-    const last3 = sorted.slice(0, 3).reverse();
+    const allCheckups = /*[[${detail.generalCheckupDetail}]]*/ [];
 
-    const labels = last3.map(item => item.examYear);
-    const diastolicData = last3.map(item => Number(item.diastolic));
-    const systolicData = last3.map(item => Number(item.systolic));
+    document.addEventListener('DOMContentLoaded', function () {
+        const sorted = (Array.isArray(allCheckups) ? allCheckups : [])
+            .filter(it => it && it.examYear)
+            .sort((a, b) => Number(b.examYear) - Number(a.examYear))
+            .slice(0, 3)
+            .reverse();
 
-    const ctx = document.getElementById('bloodPressureChart').getContext('2d');
-    new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: labels,
-            datasets: [
-                {
-                    label: '이완기 혈압',
-                    data: diastolicData,
-                    borderWidth: 2,
-                    tension: 0.2
-                },
-                {
-                    label: '수축기 혈압',
-                    data: systolicData,
-                    borderWidth: 2,
-                    tension: 0.2
-                }
-            ]
-        },
-        options: {
-            responsive: false,
-            scales: {
-                y: { beginAtZero: true }
+        const labels = sorted.map(it => it.examYear);
+        const toNumberOrNull = (v) => {
+            if (v === null || v === undefined) return null;
+            const n = Number(String(v).trim());
+            return Number.isFinite(n) ? n : null;
+        };
+
+        const systolic = sorted.map(it => toNumberOrNull(it.systolic));
+        const diastolic = sorted.map(it => toNumberOrNull(it.diastolic));
+
+        const totalChol = sorted.map(it => toNumberOrNull(it.totalCholesterol));
+        const triglyceride = sorted.map(it => toNumberOrNull(it.triglyceride));
+        const hdl = sorted.map(it => toNumberOrNull(it.hdl));
+        const ldl = sorted.map(it => toNumberOrNull(it.ldl));
+
+        const bmi = sorted.map(it => toNumberOrNull(it.bmi));
+
+        function createLineChart(canvasId, noDataId, datasets, yBeginZero = false) {
+            const canvas = document.getElementById(canvasId);
+            const nodataEl = document.getElementById(noDataId);
+
+            const hasAnyValue = datasets.some(ds => ds.data.some(v => v !== null));
+            if (!labels.length || !hasAnyValue) {
+                canvas.style.display = 'none';
+                nodataEl.style.display = 'block';
+                return;
             }
+            nodataEl.style.display = 'none';
+            canvas.style.display = 'block';
+
+            new Chart(canvas.getContext('2d'), {
+                type: 'line',
+                data: {labels, datasets},
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {y: {beginAtZero: yBeginZero}}
+                }
+            });
         }
+
+        createLineChart('bpChart', 'bpNoData', [
+            {label: '수축기', data: systolic},
+            {label: '이완기', data: diastolic}
+        ]);
+
+        createLineChart('lipidChart', 'lipidNoData', [
+            {label: '총콜레스테롤', data: totalChol},
+            {label: '중성지방', data: triglyceride},
+            {label: 'HDL', data: hdl},
+            {label: 'LDL', data: ldl}
+        ]);
+
+        createLineChart('bmiChart', 'bmiNoData', [
+            {label: 'BMI', data: bmi}
+        ]);
     });
 </script>
 
