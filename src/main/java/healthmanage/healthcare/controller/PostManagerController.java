@@ -1,6 +1,6 @@
 package healthmanage.healthcare.controller;
 
-import healthmanage.healthcare.dto.GeneralCheckupRequestDto;
+import healthmanage.healthcare.dto.request.GeneralCheckupRequestDto;
 import healthmanage.healthcare.dto.request.WorkerSearchRequest;
 import healthmanage.healthcare.dto.response.PostManagerDetailResponse;
 import healthmanage.healthcare.dto.response.PostManagerResponse;
@@ -50,7 +50,7 @@ public class PostManagerController {
         return "postmanager/create";
     }
 
-    @PostMapping
+    @PostMapping("/create")
     public String save(@ModelAttribute("form") GeneralCheckupRequestDto form) {
 
         return "redirect:/postmanager/list";

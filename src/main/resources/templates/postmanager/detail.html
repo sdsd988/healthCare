@@ -81,17 +81,20 @@
     <thead class="table-light">
     <tr>
         <th style="white-space:nowrap;">검진년도</th>
-        <th>고혈압 등급</th>
+        <th>고혈압 분류</th>
         <th>이완기 혈압</th>
         <th>수축기 혈압</th>
 
-        <th style="white-space:nowrap;">이상지질 등급</th>
+        <th style="white-space:nowrap;">당뇨</th>
+        <th>공복혈당</th>
+
+        <th style="white-space:nowrap;">이상지질혈증</th>
         <th>총콜레스테롤</th>
         <th>중성지방</th>
         <th>HDL</th>
         <th>LDL</th>
 
-        <th style="white-space:nowrap;">신장질환 등급</th>
+        <th style="white-space:nowrap;">신장질환</th>
         <th>요단백</th>
         <th>GFR</th>
         <th>크레아틴</th>
@@ -101,7 +104,6 @@
         <th>BMI</th>
 
         <th>흡연여부</th>
-        <th>공복혈당</th>
     </tr>
     </thead>
 
@@ -111,6 +113,9 @@
         <td th:text="${item.highBloodPressureGrade}"></td>
         <td th:text="${item.diastolic}"></td>
         <td th:text="${item.systolic}"></td>
+
+        <td th:text="${item.diabetesGrade}"></td>
+        <td th:text="${item.fastingBloodSugar}"></td>
 
         <td th:text="${item.lipidGrade}"></td>
         <td th:text="${item.totalCholesterol}"></td>
@@ -130,7 +135,6 @@
         <!-- Y/N 보기 좋게 변환 -->
         <td th:text="${item.smoking == 'Y' ? '흡연' : '비흡연'}"></td>
 
-        <td th:text="${item.fastingBloodSugar}"></td>
     </tr>
     </tbody>
 </table>
@@ -197,7 +201,7 @@
 
         const bmi = sorted.map(it => toNumberOrNull(it.bmi));
 
-        function createLineChart(canvasId, noDataId, datasets, yBeginZero = true) {
+        function createLineChart(canvasId, noDataId, datasets, yBeginZero = false) {
             const canvas = document.getElementById(canvasId);
             const nodataEl = document.getElementById(noDataId);
 

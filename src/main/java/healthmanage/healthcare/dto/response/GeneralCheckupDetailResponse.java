@@ -8,10 +8,10 @@ import lombok.Setter;
 @Setter
 public class GeneralCheckupDetailResponse {
 
-    String highBloodPressureGrade;  // 고혈압등급
+    String highBloodPressureGrade;  // 혈압
     String diastolic;               // 이완기혈압수치
     String systolic;                // 수축기혈압수치
-    String lipidGrade;              // 이상지질등급
+    String lipidGrade;              // 이상지질
     String totalCholesterol;        // 총콜레스테롤
     String triglyceride;            // 중성지방
     String hdl;                     // HDL
@@ -26,9 +26,10 @@ public class GeneralCheckupDetailResponse {
     String smoking;                 // 흡연여부
     String fastingBloodSugar;       // 공복혈당
     String examYear;                // 검진년도
+    String diabetesGrade;           // 당뇨
 
     @Builder
-    public GeneralCheckupDetailResponse(String highBloodPressureGrade, String diastolic, String systolic, String lipidGrade, String totalCholesterol, String triglyceride, String hdl, String ldl, String kidneyDiseaseGrade, String urineProtein, String gfr, String creatinine, String obesityGrade, String waist, String bmi, String smoking, String fastingBloodSugar,String examYear) {
+    public GeneralCheckupDetailResponse(String highBloodPressureGrade, String diastolic, String systolic, String lipidGrade, String totalCholesterol, String triglyceride, String hdl, String ldl, String kidneyDiseaseGrade, String urineProtein, String gfr, String creatinine, String obesityGrade, String waist, String bmi, String smoking, String fastingBloodSugar,String examYear,String diabetesGrade) {
         this.highBloodPressureGrade = highBloodPressureGrade;
         this.diastolic = diastolic;
         this.systolic = systolic;
@@ -47,5 +48,6 @@ public class GeneralCheckupDetailResponse {
         this.smoking = smoking;
         this.fastingBloodSugar = fastingBloodSugar;
         this.examYear = examYear;
+        this.diabetesGrade = diabetesGrade;
     }
 }
