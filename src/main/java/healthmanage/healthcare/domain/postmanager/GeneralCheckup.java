@@ -3,6 +3,7 @@ package healthmanage.healthcare.domain.postmanager;
 import healthmanage.healthcare.domain.Worker;
 import healthmanage.healthcare.domain.converter.SmokingConverter;
 import jakarta.persistence.*;
+import lombok.Cleanup;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -79,4 +80,16 @@ public class GeneralCheckup {
 
     @Column(name = "examYear")
     private String examYear;                // 검진년도
+
+    @Column(name= "liver_disease_grade")
+    private String liverDiseaseGrade;        // 간질환등급
+
+    @Column(name ="ast")
+    private String ast;                     // AST
+
+    @Column(name= "alt")
+    private String alt;                     // ALT
+
+    @Column(name = "gtp")
+    private String gtp;                     // GTP
 }

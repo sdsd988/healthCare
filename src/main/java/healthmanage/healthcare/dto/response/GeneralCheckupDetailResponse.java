@@ -1,5 +1,6 @@
 package healthmanage.healthcare.dto.response;
 
+import jakarta.persistence.Column;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -27,9 +28,17 @@ public class GeneralCheckupDetailResponse {
     String fastingBloodSugar;       // 공복혈당
     String examYear;                // 검진년도
     String diabetesGrade;           // 당뇨
+    String liverDiseaseGrade;        // 간질환등급
+    String ast;                     // AST
+    String alt;                     // ALT
+    String gtp;                     // GTP
 
     @Builder
-    public GeneralCheckupDetailResponse(String highBloodPressureGrade, String diastolic, String systolic, String lipidGrade, String totalCholesterol, String triglyceride, String hdl, String ldl, String kidneyDiseaseGrade, String urineProtein, String gfr, String creatinine, String obesityGrade, String waist, String bmi, String smoking, String fastingBloodSugar,String examYear,String diabetesGrade) {
+    public GeneralCheckupDetailResponse(String highBloodPressureGrade, String diastolic, String systolic, String lipidGrade,
+                                        String totalCholesterol, String triglyceride, String hdl, String ldl, String kidneyDiseaseGrade,
+                                        String urineProtein, String gfr, String creatinine, String obesityGrade, String waist, String bmi,
+                                        String smoking, String fastingBloodSugar, String examYear, String diabetesGrade,
+                                        String liverDiseaseGrade, String ast, String alt, String gtp) {
         this.highBloodPressureGrade = highBloodPressureGrade;
         this.diastolic = diastolic;
         this.systolic = systolic;
@@ -49,5 +58,9 @@ public class GeneralCheckupDetailResponse {
         this.fastingBloodSugar = fastingBloodSugar;
         this.examYear = examYear;
         this.diabetesGrade = diabetesGrade;
+        this.liverDiseaseGrade =   liverDiseaseGrade;
+        this.ast = ast;
+        this.alt = alt;
+        this.gtp = gtp;
     }
 }
