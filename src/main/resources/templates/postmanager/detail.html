@@ -13,14 +13,19 @@
             margin-top: 30px;
         }
 
-        /* 차트만 그리드 */
         .charts-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 20px;
         }
 
-        /* chart-card 그대로 */
+        @media (min-width: 1200px) {
+            .charts-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+
         .chart-card {
             background: #fff;
             border: 1px solid #e6e6e6;
@@ -33,7 +38,6 @@
             width: 100% !important;
             height: 260px !important;
         }
-
     </style>
 </head>
 <body>
@@ -45,31 +49,20 @@
 ============================= -->
 <h2>직원 정보</h2>
 
-    <table class="table table-bordered">
-        <thead class="table-light">
-        <tr>
-            <th style="width: 150px;">항목</th>
-            <th>내용</th>
-        </tr>
-        </thead>
+<table class="table table-bordered">
+    <thead class="table-light">
+    <tr>
+        <th style="width: 150px;">항목</th>
+        <th>내용</th>
+    </tr>
+    </thead>
 
-        <tbody>
-        <tr>
-            <th>이름</th>
-            <td th:text="${detail.name}"></td>
-        </tr>
-
-        <tr>
-            <th>부서</th>
-            <td th:text="${detail.department}"></td>
-        </tr>
-
-        <tr>
-            <th>직군</th>
-            <td th:text="${detail.occupation}"></td>
-        </tr>
-        </tbody>
-    </table>
+    <tbody>
+    <tr><th>이름</th><td th:text="${detail.name}"></td></tr>
+    <tr><th>부서</th><td th:text="${detail.department}"></td></tr>
+    <tr><th>직군</th><td th:text="${detail.occupation}"></td></tr>
+    </tbody>
+</table>
 
 
 <!-- ============================
@@ -80,36 +73,22 @@
 <table class="table table-bordered">
     <thead class="table-light">
     <tr>
-        <th style="white-space:nowrap;">검진년도</th>
+        <th>검진년도</th>
         <th>고혈압 분류</th>
-        <th>이완기 혈압</th>
-        <th>수축기 혈압</th>
 
-        <th style="white-space:nowrap;">당뇨</th>
-        <th>공복혈당</th>
+        <th>당뇨</th>
 
-        <th style="white-space:nowrap;">이상지질혈증</th>
-        <th>총콜레스테롤</th>
-        <th>중성지방</th>
-        <th>HDL</th>
-        <th>LDL</th>
+        <th>지질</th>
 
-        <th style="white-space:nowrap;">신장질환</th>
+        <th>간장질환(등급)</th>
+
+        <th>신장질환(등급)</th>
         <th>요단백</th>
-        <th>GFR</th>
-        <th>크레아틴</th>
 
+        <th>비만</th>
 
-        <th style="white-space:nowrap;">간장질환</th>
-        <th>AST</th>
-        <th>ALT</th>
-        <th>GTP</th>
-
-        <th>비만등급</th>
-        <th>허리둘레</th>
-        <th>BMI</th>
-
-        <th>흡연여부</th>
+        <th>흡연</th>
+        <th>음주</th>
     </tr>
     </thead>
 
@@ -117,78 +96,90 @@
     <tr th:each="item : ${detail.generalCheckupDetail}">
         <td th:text="${item.examYear}"></td>
         <td th:text="${item.highBloodPressureGrade}"></td>
-        <td th:text="${item.diastolic}"></td>
-        <td th:text="${item.systolic}"></td>
 
         <td th:text="${item.diabetesGrade}"></td>
-        <td th:text="${item.fastingBloodSugar}"></td>
 
         <td th:text="${item.lipidGrade}"></td>
-        <td th:text="${item.totalCholesterol}"></td>
-        <td th:text="${item.triglyceride}"></td>
-        <td th:text="${item.hdl}"></td>
-        <td th:text="${item.ldl}"></td>
 
         <td th:text="${item.liverDiseaseGrade}"></td>
-        <td th:text="${item.ast}"></td>
-        <td th:text="${item.alt}"></td>
-        <td th:text="${item.gtp}"></td>
 
         <td th:text="${item.kidneyDiseaseGrade}"></td>
         <td th:text="${item.urineProtein}"></td>
-        <td th:text="${item.gfr}"></td>
-        <td th:text="${item.creatinine}"></td>
 
         <td th:text="${item.obesityGrade}"></td>
-        <td th:text="${item.waist}"></td>
-        <td th:text="${item.bmi}"></td>
 
-        <!-- Y/N 보기 좋게 변환 -->
         <td th:text="${item.smoking == 'Y' ? '흡연' : '비흡연'}"></td>
-
     </tr>
     </tbody>
 </table>
 
 
 <!-- ============================
-     3. 그래프 영역 (테이블 밖, 독립적)
+     3. 그래프 영역
 ============================= -->
 <div class="after-chart-container">
     <div class="charts-grid">
 
-        <!-- 카드 1: 혈압 -->
+        <!-- 혈압 -->
         <div class="chart-card">
-            <div class="chart-title">혈압 추이 (최근 3년)</div>
+            <div class="chart-title">혈압 추이</div>
             <canvas id="bpChart"></canvas>
-            <div id="bpNoData" class="no-data" style="display:none;">표시할 혈압 데이터가 없습니다.</div>
+            <div id="bpNoData" class="no-data" style="display:none;">데이터 없음</div>
+            <div id="bpTable" class="mt-3"></div>
         </div>
 
-        <!-- 카드 2: 지질 -->
+        <!-- 공복혈당 -->
         <div class="chart-card">
-            <div class="chart-title">지질 검사 추이 (최근 3년)</div>
+            <div class="chart-title">당뇨/공복혈당 추이</div>
+            <canvas id="diabetesChart"></canvas>
+            <div id="diabetesNoData" class="no-data" style="display:none;">데이터 없음</div>
+            <div id="diabetesTable" class="mt-3"></div>
+        </div>
+
+        <!-- 지질 -->
+        <div class="chart-card">
+            <div class="chart-title">이상지질 추이</div>
             <canvas id="lipidChart"></canvas>
-            <div id="lipidNoData" class="no-data" style="display:none;">표시할 지질 데이터가 없습니다.</div>
+            <div id="lipidNoData" class="no-data" style="display:none;">데이터 없음</div>
+            <div id="lipidTable" class="mt-3"></div>
         </div>
 
-        <!-- 카드 3: BMI -->
+        <!-- 신장 -->
         <div class="chart-card">
-            <div class="chart-title">BMI 추이 (최근 3년)</div>
-            <canvas id="bmiChart"></canvas>
-            <div id="bmiNoData" class="no-data" style="display:none;">표시할 BMI 데이터가 없습니다.</div>
+            <div class="chart-title">신장질환 추이</div>
+            <canvas id="kidneyDiseaseChart"></canvas>
+            <div id="kidneyDiseaseNoData" class="no-data" style="display:none;">데이터 없음</div>
+            <div id="kidneyTable" class="mt-3"></div>
         </div>
+
+        <!-- 간장 -->
+        <div class="chart-card">
+            <div class="chart-title">간장질환 추이</div>
+            <canvas id="liverChart"></canvas>
+            <div id="liverNoData" class="no-data" style="display:none;">데이터 없음</div>
+            <div id="liverTable" class="mt-3"></div>
+        </div>
+
+        <!-- BMI -->
+        <div class="chart-card">
+            <div class="chart-title">비만 추이</div>
+            <canvas id="bmiChart"></canvas>
+            <div id="bmiNoData" class="no-data" style="display:none;">데이터 없음</div>
+            <div id="bmiTable" class="mt-3"></div>
+        </div>
+
     </div>
 </div>
 
-<!-- Chart.js -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script th:inline="javascript">
-    /* 그대로 — 너가 주신 JS 그래프 로직 전체 유지 (문제 없음) */
 
     const allCheckups = /*[[${detail.generalCheckupDetail}]]*/ [];
 
     document.addEventListener('DOMContentLoaded', function () {
+
+        /** ---------- 최근 3년 데이터 추출 ---------- **/
         const sorted = (Array.isArray(allCheckups) ? allCheckups : [])
             .filter(it => it && it.examYear)
             .sort((a, b) => Number(b.examYear) - Number(a.examYear))
@@ -196,23 +187,36 @@
             .reverse();
 
         const labels = sorted.map(it => it.examYear);
+
         const toNumberOrNull = (v) => {
             if (v === null || v === undefined) return null;
             const n = Number(String(v).trim());
             return Number.isFinite(n) ? n : null;
         };
 
+        /** ---------- 값 매핑 ---------- **/
         const systolic = sorted.map(it => toNumberOrNull(it.systolic));
         const diastolic = sorted.map(it => toNumberOrNull(it.diastolic));
+
+        const fasting = sorted.map(it => toNumberOrNull(it.fastingBloodSugar));
 
         const totalChol = sorted.map(it => toNumberOrNull(it.totalCholesterol));
         const triglyceride = sorted.map(it => toNumberOrNull(it.triglyceride));
         const hdl = sorted.map(it => toNumberOrNull(it.hdl));
         const ldl = sorted.map(it => toNumberOrNull(it.ldl));
 
-        const bmi = sorted.map(it => toNumberOrNull(it.bmi));
+        const gfr = sorted.map(it => toNumberOrNull(it.gfr));
+        const creatinine = sorted.map(it => toNumberOrNull(it.creatinine));
 
-        function createLineChart(canvasId, noDataId, datasets, yBeginZero = false) {
+        const ast = sorted.map(it => toNumberOrNull(it.ast));
+        const alt = sorted.map(it => toNumberOrNull(it.alt));
+        const gtp = sorted.map(it => toNumberOrNull(it.gtp));
+
+        const bmi = sorted.map(it => toNumberOrNull(it.bmi));
+        const waist = sorted.map(it => toNumberOrNull(it.waist));
+
+        /** ---------- 공통 차트 생성 함수 ---------- **/
+        function createLineChart(canvasId, noDataId, datasets) {
             const canvas = document.getElementById(canvasId);
             const nodataEl = document.getElementById(noDataId);
 
@@ -227,30 +231,110 @@
 
             new Chart(canvas.getContext('2d'), {
                 type: 'line',
-                data: {labels, datasets},
+                data: { labels, datasets },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    scales: {y: {beginAtZero: yBeginZero}}
+                    scales: { y: { beginAtZero: false } }
                 }
             });
         }
 
+        /** ---------- 공통 테이블 자동 생성 ---------- **/
+        function renderTable(targetId, labels, ...columns) {
+            const container = document.getElementById(targetId);
+            if (!container) return;
+
+            let html = `
+                <table class="table table-bordered table-sm mt-2">
+                <thead>
+                    <tr>
+                        <th>년도</th>
+                        ${columns.map(c => `<th>${c.label}</th>`).join("")}
+                    </tr>
+                </thead>
+                <tbody>
+            `;
+
+            labels.forEach((year, i) => {
+                html += `<tr><td>${year}</td>`;
+                columns.forEach(c => {
+                    html += `<td>${c.data[i] ?? '-'}</td>`;
+                });
+                html += `</tr>`;
+            });
+
+            html += "</tbody></table>";
+
+            container.innerHTML = html;
+        }
+
+        /** ---------- 차트 + 테이블 렌더링 ---------- **/
+
+        // 혈압
         createLineChart('bpChart', 'bpNoData', [
-            {label: '수축기', data: systolic},
-            {label: '이완기', data: diastolic}
+            { label: '수축기', data: systolic },
+            { label: '이완기', data: diastolic }
         ]);
+        renderTable("bpTable", labels,
+            { label: "수축기", data: systolic },
+            { label: "이완기", data: diastolic }
+        );
 
+        // 당뇨
+        createLineChart('diabetesChart', 'diabetesNoData', [
+            { label: '공복혈당', data: fasting }
+        ]);
+        renderTable("diabetesTable", labels,
+            { label: "공복혈당", data: fasting }
+        );
+
+        // 지질
         createLineChart('lipidChart', 'lipidNoData', [
-            {label: '총콜레스테롤', data: totalChol},
-            {label: '중성지방', data: triglyceride},
-            {label: 'HDL', data: hdl},
-            {label: 'LDL', data: ldl}
+            { label: '총콜', data: totalChol },
+            { label: '중성지방', data: triglyceride },
+            { label: 'HDL', data: hdl },
+            { label: 'LDL', data: ldl }
         ]);
+        renderTable("lipidTable", labels,
+            { label: '총콜', data: totalChol },
+            { label: '중성지방', data: triglyceride },
+            { label: 'HDL', data: hdl },
+            { label: 'LDL', data: ldl }
+        );
 
-        createLineChart('bmiChart', 'bmiNoData', [
-            {label: 'BMI', data: bmi}
+        // 신장
+        createLineChart('kidneyDiseaseChart', 'kidneyDiseaseNoData', [
+            { label: 'GFR', data: gfr },
+            { label: '크레아틴', data: creatinine }
         ]);
+        renderTable("kidneyTable", labels,
+            { label: 'GFR', data: gfr },
+            { label: '크레아틴', data: creatinine }
+        );
+
+        // 간장
+        createLineChart('liverChart', 'liverNoData', [
+            { label: 'AST', data: ast },
+            { label: 'ALT', data: alt },
+            { label: 'GTP', data: gtp }
+        ]);
+        renderTable("liverTable", labels,
+            { label: 'AST', data: ast },
+            { label: 'ALT', data: alt },
+            { label: 'GTP', data: gtp }
+        );
+
+        // BMI
+        createLineChart('bmiChart', 'bmiNoData', [
+            { label: 'BMI', data: bmi },
+            { label: '허리둘레', data: waist }
+        ]);
+        renderTable("bmiTable", labels,
+            { label: "BMI", data: bmi },
+            { label: "허리둘레", data: waist }
+        );
+
     });
 </script>
 
