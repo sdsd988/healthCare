@@ -68,7 +68,7 @@
 <!-- ============================
      2. 건강검진 정보 리스트
 ============================= -->
-<h2>건강검진 이력</h2>
+<h2>일반건강검진 이력</h2>
 
 <table class="table table-bordered">
     <thead class="table-light">
@@ -89,6 +89,7 @@
 
         <th>흡연</th>
         <th>음주</th>
+        <th>근골격계 질환</th>
     </tr>
     </thead>
 
@@ -108,7 +109,10 @@
 
         <td th:text="${item.obesityGrade}"></td>
 
-        <td th:text="${item.smoking == 'Y' ? '흡연' : '비흡연'}"></td>
+        <td th:text="${item.smokingYn == 'Y' ? '흡연' : '비흡연'}"></td>
+        <td th:text="${item.drunkenYn == 'Y' ? '음주' : '술을 마시지 않음'}"></td>
+        <td th:text="${item.musculoskeletalGrade}"></td>
+
     </tr>
     </tbody>
 </table>
@@ -130,7 +134,7 @@
 
         <!-- 공복혈당 -->
         <div class="chart-card">
-            <div class="chart-title">당뇨/공복혈당 추이</div>
+            <div class="chart-title">당뇨 추이</div>
             <canvas id="diabetesChart"></canvas>
             <div id="diabetesNoData" class="no-data" style="display:none;">데이터 없음</div>
             <div id="diabetesTable" class="mt-3"></div>
@@ -170,6 +174,38 @@
 
     </div>
 </div>
+
+<!-- ============================
+     3. 특수건강검진 이력
+============================= -->
+<h2 class="mt-4">특수건강검진 이력</h2>
+
+<table class="table table-bordered">
+    <thead class="table-light">
+    <tr>
+        <th>검진년도</th>
+        <th>작업환경유해요인</th>
+        <th>판정결과</th>
+        <th>청력</th>
+        <th>폐기능</th>
+        <th>혈액검사</th>
+        <th>소변검사</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr th:each="sp : ${detail.specialCheckupDetail}">
+        <td th:text="${sp.examYear}"></td>
+        <td th:text="${sp.hazardFactor}"></td>
+        <td th:text="${sp.resultGrade}"></td>
+        <td th:text="${sp.hearing}"></td>
+        <td th:text="${sp.lungFunction}"></td>
+        <td th:text="${sp.bloodTest}"></td>
+        <td th:text="${sp.urineTest}"></td>
+    </tr>
+    </tbody>
+</table>
+
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
@@ -291,13 +327,13 @@
 
         // 지질
         createLineChart('lipidChart', 'lipidNoData', [
-            { label: '총콜', data: totalChol },
+            { label: '총콜레스테롤', data: totalChol },
             { label: '중성지방', data: triglyceride },
             { label: 'HDL', data: hdl },
             { label: 'LDL', data: ldl }
         ]);
         renderTable("lipidTable", labels,
-            { label: '총콜', data: totalChol },
+            { label: '총콜레스테롤', data: totalChol },
             { label: '중성지방', data: triglyceride },
             { label: 'HDL', data: hdl },
             { label: 'LDL', data: ldl }

@@ -11,6 +11,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import healthmanage.healthcare.repository.GeneralCheckupRepository;
+import healthmanage.healthcare.repository.SpecialCheckupRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +22,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class PostManagerService {
 
     private final GeneralCheckupRepository generalCheckupRepository;
+
+    private final SpecialCheckupRepository specialCheckupRepository;
 
 
     public List<PostManagerResponse> findAfterCareResults(WorkerSearchRequest workerSearchRequest) {
@@ -87,10 +90,10 @@ public class PostManagerService {
         // 1. 건강검진 세부 리스트
         GeneralCheckupDetailResponse checkup1 =
                 GeneralCheckupDetailResponse.builder()
-                        .highBloodPressureGrade("A")
+                        .highBloodPressureGrade("C2")
                         .diastolic("80")
                         .systolic("120")
-                        .lipidGrade("B")
+                        .lipidGrade("D2")
                         .totalCholesterol("180")
                         .triglyceride("150")
                         .hdl("55")
@@ -102,7 +105,8 @@ public class PostManagerService {
                         .obesityGrade("정상")
                         .waist("82")
                         .bmi("22.3")
-                        .smoking("N")          // Y/N
+                        .smokingYn("N")
+                        .drunkenYn("N")// Y/N
                         .fastingBloodSugar("90")
                         .examYear("2024")
                         .diabetesGrade("C")
@@ -110,26 +114,28 @@ public class PostManagerService {
                         .ast("47")
                         .alt("39")
                         .gtp("217")
+                        .musculoskeletalGrade("관리대상자")
                         .build();
 
         GeneralCheckupDetailResponse checkup2 =
                 GeneralCheckupDetailResponse.builder()
-                        .highBloodPressureGrade("B")
+                        .highBloodPressureGrade("D2")
                         .diastolic("85")
                         .systolic("130")
-                        .lipidGrade("C")
+                        .lipidGrade("A")
                         .totalCholesterol("200")
                         .triglyceride("170")
                         .hdl("50")
                         .ldl("110")
-                        .kidneyDiseaseGrade("A")
+                        .kidneyDiseaseGrade("D2")
                         .urineProtein("N")
                         .gfr("90")
                         .creatinine("0.9")
                         .obesityGrade("과체중")
                         .waist("88")
                         .bmi("24.8")
-                        .smoking("Y")          // Y/N
+                        .smokingYn("Y")
+                        .drunkenYn("Y")// Y/N
                         .fastingBloodSugar("100")
                         .examYear("2025")
                         .diabetesGrade("D2")
@@ -137,6 +143,7 @@ public class PostManagerService {
                         .ast("62")
                         .alt("55")
                         .gtp("317")
+                        .musculoskeletalGrade("통증호소자")
                         .build();
 
         // 2. 근로자 + 건강검진 Response
@@ -149,6 +156,7 @@ public class PostManagerService {
 
         return response;
     }
+
 
     public PostManagerDetailResponse getPostManagerDetail(Long workerId) {
 

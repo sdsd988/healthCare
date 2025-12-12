@@ -24,7 +24,8 @@ public class GeneralCheckupDetailResponse {
     String obesityGrade;            // 비만등급
     String waist;                   // 허리둘레
     String bmi;                     // 체질량지수
-    String smoking;                 // 흡연여부
+    String smokingYn;               // 흡연여부
+    String drunkenYn;               // 음주여부
     String fastingBloodSugar;       // 공복혈당
     String examYear;                // 검진년도
     String diabetesGrade;           // 당뇨
@@ -32,13 +33,14 @@ public class GeneralCheckupDetailResponse {
     String ast;                     // AST
     String alt;                     // ALT
     String gtp;                     // GTP
+    String musculoskeletalGrade;   // 근골격계등급
 
     @Builder
     public GeneralCheckupDetailResponse(String highBloodPressureGrade, String diastolic, String systolic, String lipidGrade,
                                         String totalCholesterol, String triglyceride, String hdl, String ldl, String kidneyDiseaseGrade,
                                         String urineProtein, String gfr, String creatinine, String obesityGrade, String waist, String bmi,
-                                        String smoking, String fastingBloodSugar, String examYear, String diabetesGrade,
-                                        String liverDiseaseGrade, String ast, String alt, String gtp) {
+                                        String smokingYn, String drunkenYn, String fastingBloodSugar, String examYear, String diabetesGrade,
+                                        String liverDiseaseGrade, String ast, String alt, String gtp,String musculoskeletalGrade) {
         this.highBloodPressureGrade = highBloodPressureGrade;
         this.diastolic = diastolic;
         this.systolic = systolic;
@@ -54,7 +56,8 @@ public class GeneralCheckupDetailResponse {
         this.obesityGrade = obesityGrade;
         this.waist = waist;
         this.bmi = bmi;
-        this.smoking = smoking;
+        this.smokingYn = smokingYn;
+        this.drunkenYn = drunkenYn;
         this.fastingBloodSugar = fastingBloodSugar;
         this.examYear = examYear;
         this.diabetesGrade = diabetesGrade;
@@ -62,5 +65,6 @@ public class GeneralCheckupDetailResponse {
         this.ast = ast;
         this.alt = alt;
         this.gtp = gtp;
+        this.musculoskeletalGrade = musculoskeletalGrade;
     }
 }

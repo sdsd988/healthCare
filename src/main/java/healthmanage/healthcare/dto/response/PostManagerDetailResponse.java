@@ -21,6 +21,9 @@ public class PostManagerDetailResponse {
     // 2. 일반건강검진 정보
     List<GeneralCheckupDetailResponse> generalCheckupDetail;
 
+    //3. 특수건간강검진 정보
+    List<SpecialCheckupDetailResponse> specialCheckupDetail;
+
 
 
 }

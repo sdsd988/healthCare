@@ -6,7 +6,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 @Entity
-public class SpecialHealth {
+public class SpecialCheckup {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

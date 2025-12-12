@@ -40,7 +40,9 @@ public class PostManagerController {
         PostManagerDetailResponse response = postManagerService.getPostManagerDetail(workerId);
 
         // 2. 모델에 DTO 추가
+
         model.addAttribute("detail", response);
+
         return "postmanager/detail";
     }
 

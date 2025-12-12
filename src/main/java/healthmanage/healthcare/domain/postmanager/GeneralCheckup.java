@@ -69,8 +69,8 @@ public class GeneralCheckup {
     private String bmi;                     // 체질량지수
 
     @Convert(converter = SmokingConverter.class)
-    @Column(name = "smoking")
-    private String smoking;                 // 흡연여부
+    @Column(name = "smoking_yn")
+    private String smokingYn;                 // 흡연여부
 
     @Column(name = "fasting_blood_sugar")
     private String fastingBloodSugar;       // 공복혈당
