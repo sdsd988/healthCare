@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>일반건강검진 신규 등록</title>
+
+    <title>사후관리 소견서 등록</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
@@ -11,119 +12,210 @@
         body { background-color: #f8f9fa; }
         .card-header { font-weight: bold; background-color: #e9ecef; }
         .section-title { font-size: 1.1rem; font-weight: bold; margin-top: 20px; }
+        .required::after { content: " *"; color: red; }
     </style>
 </head>
+
 <body>
 
 <div class="container mt-4">
-    <h3 class="mb-4 text-dark">🩺 일반건강검진 결과 등록</h3>
+    <h3 class="mb-4 text-dark">📝 사후관리 소견서 등록</h3>
 
-    <form th:action="@{/postmanager/create}" th:object="${form}" method="post">
+    <form th:action="@{/aftercare/create}" th:object="${form}" method="post">
 
-        <!-- 기본정보 -->
+        <!-- 1. 기본 정보 -->
         <div class="card mb-4">
             <div class="card-header">기본 정보</div>
             <div class="card-body row g-3">
 
-                <div class="col-md-4">
-                    <label class="form-label">직원명</label>
-                    <input type="text" th:field="*{workerName}" class="form-control form-control-sm" required>
+                <div class="col-md-3">
+                    <label class="form-label required">직원명</label>
+                    <input type="text" th:field="*{workerName}" required class="form-control form-control-sm">
                 </div>
 
-                <div class="col-md-4">
-                    <label class="form-label">부서</label>
-                    <select th:field="*{department}" class="form-select form-select-sm" required>
-                        <option value="선택">선택</option>
+                <div class="col-md-3">
+                    <label class="form-label required">부서</label>
+                    <select th:field="*{department}" required class="form-select form-select-sm">
+                        <option value="">선택</option>
                         <option value="인사노무팀">인사노무팀</option>
-                        <option value="바라산휴양림팀">바라산휴양림팀</option>
-                        <option value="재무회계팀">재무회계팀</option>
                         <option value="총무전산팀">총무전산팀</option>
-
+                        <option value="재무회계팀">재무회계팀</option>
+                        <option value="바라산휴양림팀">바라산휴양림팀</option>
                     </select>
                 </div>
 
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <label class="form-label">직무</label>
                     <input type="text" th:field="*{occupation}" class="form-control form-control-sm">
                 </div>
 
+                <div class="col-md-3">
+                    <label class="form-label">근무 형태</label>
+                    <input type="text" th:field="*{workType}" class="form-control form-control-sm">
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label">생년월일</label>
+                    <input type="date" th:field="*{birthDate}" class="form-control form-control-sm">
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label">성별</label>
+                    <select th:field="*{gender}" class="form-select form-select-sm">
+                        <option value="">선택</option>
+                        <option value="M">남</option>
+                        <option value="F">여</option>
+                    </select>
+                </div>
+
             </div>
         </div>
 
-        <!-- 일반검진 결과 -->
+
+        <!-- 2. 일반건강검진 결과 -->
         <div class="card mb-4">
             <div class="card-header">일반건강검진 결과</div>
             <div class="card-body row g-3">
 
+                <!-- 혈압 -->
                 <div class="col-md-3">
-                    <label class="form-label">종합등급</label>
-                    <select th:field="*{generalCheckupGrade}" class="form-select form-select-sm">
-                        <option value="선택">선택</option>
-                        <option value="A">A</option>
-                        <option value="B">B</option>
-                        <option value="C">C</option>
-                        <option value="D">D</option>
-
-                    </select>
+                    <label class="form-label">고혈압 등급</label>
+                    <input type="text" th:field="*{highBloodPressureGrade}" class="form-control form-control-sm">
                 </div>
 
                 <div class="col-md-3">
-                    <label class="form-label">혈압(mmHg)</label>
-                    <input type="text" th:field="*{bloodPressure}" class="form-control form-control-sm">
+                    <label class="form-label">수축기 혈압</label>
+                    <input type="number" th:field="*{systolic}" class="form-control form-control-sm">
                 </div>
 
                 <div class="col-md-3">
-                    <label class="form-label">혈당</label>
-                    <input type="text" th:field="*{bloodSugar}" class="form-control form-control-sm">
+                    <label class="form-label">이완기 혈압</label>
+                    <input type="number" th:field="*{diastolic}" class="form-control form-control-sm">
+                </div>
+
+                <!-- 이상지질 -->
+                <div class="col-md-3">
+                    <label class="form-label">이상지질 등급</label>
+                    <input type="text" th:field="*{lipidGrade}" class="form-control form-control-sm">
                 </div>
 
                 <div class="col-md-3">
-                    <label class="form-label">콜레스테롤</label>
-                    <input type="text" th:field="*{cholesterol}" class="form-control form-control-sm">
+                    <label class="form-label">총콜레스테롤</label>
+                    <input type="number" th:field="*{totalCholesterol}" class="form-control form-control-sm">
                 </div>
 
-                <div class="col-12">
-                    <label class="form-label">유소견 사항</label>
-                    <textarea th:field="*{findings}" class="form-control" rows="3"></textarea>
+                <div class="col-md-3">
+                    <label class="form-label">중성지방</label>
+                    <input type="number" th:field="*{triglyceride}" class="form-control form-control-sm">
                 </div>
 
-            </div>
-        </div>
+                <div class="col-md-3">
+                    <label class="form-label">HDL</label>
+                    <input type="number" th:field="*{hdl}" class="form-control form-control-sm">
+                </div>
 
-        <!-- 사후관리 -->
-        <div class="card mb-4">
-            <div class="card-header">사후관리 소견</div>
-            <div class="card-body row g-3">
+                <div class="col-md-3">
+                    <label class="form-label">LDL</label>
+                    <input type="number" th:field="*{ldl}" class="form-control form-control-sm">
+                </div>
 
-                <div class="col-md-4">
-                    <label class="form-label">작업 적합성</label>
-                    <select th:field="*{workFit}" class="form-select form-select-sm">
+                <!-- 공복혈당 -->
+                <div class="col-md-3">
+                    <label class="form-label">공복혈당</label>
+                    <input type="number" th:field="*{fastingBloodSugar}" class="form-control form-control-sm">
+                </div>
+
+                <!-- 비만 -->
+                <div class="col-md-3">
+                    <label class="form-label">비만 등급</label>
+                    <input type="text" th:field="*{obesityGrade}" class="form-control form-control-sm">
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label">허리둘레</label>
+                    <input type="number" th:field="*{waist}" class="form-control form-control-sm">
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label">BMI</label>
+                    <input type="number" th:field="*{bmi}" class="form-control form-control-sm" step="0.1">
+                </div>
+
+                <!-- 간기능 -->
+                <div class="col-md-3">
+                    <label class="form-label">간질환 등급</label>
+                    <input type="text" th:field="*{liverDiseaseGrade}" class="form-control form-control-sm">
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label">AST</label>
+                    <input type="number" th:field="*{ast}" class="form-control form-control-sm">
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label">ALT</label>
+                    <input type="number" th:field="*{alt}" class="form-control form-control-sm">
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label">GTP</label>
+                    <input type="number" th:field="*{gtp}" class="form-control form-control-sm">
+                </div>
+
+                <!-- 신장 -->
+                <div class="col-md-3">
+                    <label class="form-label">신장질환 등급</label>
+                    <input type="text" th:field="*{kidneyDiseaseGrade}" class="form-control form-control-sm">
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label">요단백</label>
+                    <input type="text" th:field="*{urineProtein}" class="form-control form-control-sm">
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label">GFR</label>
+                    <input type="number" th:field="*{gfr}" class="form-control form-control-sm">
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label">크레아틴</label>
+                    <input type="number" th:field="*{creatinine}" class="form-control form-control-sm">
+                </div>
+
+                <!-- 생활 습관 -->
+                <div class="col-md-3">
+                    <label class="form-label">흡연 여부</label>
+                    <select th:field="*{smokingYn}" class="form-select form-select-sm">
                         <option value="">선택</option>
-                        <option value="적합">적합</option>
-                        <option value="조건부 적합">조건부 적합</option>
-                        <option value="부적합">부적합</option>
+                        <option value="Y">흡연</option>
+                        <option value="N">비흡연</option>
                     </select>
                 </div>
 
-                <div class="col-md-4">
-                    <label class="form-label">보건상담 여부</label>
-                    <select th:field="*{hasHealthConsultation}" class="form-select form-select-sm">
-                        <option th:value="true">있음</option>
-                        <option th:value="false">없음</option>
+                <div class="col-md-3">
+                    <label class="form-label">음주 여부</label>
+                    <select th:field="*{drunkenYn}" class="form-select form-select-sm">
+                        <option value="">선택</option>
+                        <option value="Y">음주</option>
+                        <option value="N">비음주</option>
                     </select>
                 </div>
 
-                <div class="col-md-12">
-                    <label class="form-label">의사 소견</label>
-                    <textarea th:field="*{doctorOpinion}" class="form-control" rows="4"></textarea>
+                <!-- 검사 연도 -->
+                <div class="col-md-3">
+                    <label class="form-label required">검사 연도</label>
+                    <input type="number" th:field="*{examYear}" required class="form-control form-control-sm">
                 </div>
 
             </div>
         </div>
 
-        <!-- 버튼 -->
+
+
+        <!-- ▣ 버튼 영역 -->
         <div class="text-end">
-            <a href="/health/results" class="btn btn-secondary btn-sm">목록</a>
+            <a href="/aftercare/list" class="btn btn-secondary btn-sm">목록</a>
             <button type="submit" class="btn btn-primary btn-sm">저장</button>
         </div>
 
@@ -132,5 +224,6 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 </html>

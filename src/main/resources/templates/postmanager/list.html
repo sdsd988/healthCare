@@ -177,7 +177,7 @@
                         <td th:text="${#temporals.format(result.registrationDate, 'yyyy-MM-dd')}"></td>
 
                         <td>
-                            <a th:href="@{/templates/postmanager/detail/{id}(id=${result.workerId})}"
+                            <a th:href="@{/postmanager/detail/{id}(id=${result.workerId})}"
                                class="btn btn-sm btn-info btn-flat">상세</a>
                         </td>
                     </tr>
